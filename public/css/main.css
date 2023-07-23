@@ -1,0 +1,89 @@
+body {
+    background-color: #ebeff4;
+    color: #303030;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* -----------------------------------
+    Стили для формы
+   ---------------------------------- */
+
+.add-container {
+    margin: 100px 0 20px 0;
+    width: 320px;
+    height: 250px;
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+.add-header-div {
+    height: 60px;
+    margin-bottom: 20px;
+    padding: 0 25px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+input.form-control::placeholder {
+    color: #b9b9b9;
+}
+
+input.form-control {
+    border-color: #eeeeee;
+}
+
+.name-div {
+    margin-bottom: 10px;
+}
+
+.phone-div {
+    margin-bottom: 15px;
+}
+
+.form-container {
+    padding: 0 25px 0;
+}
+
+.btn {
+    border-radius: 4px;
+}
+
+.btn-primary {
+    width: 98px;
+    height: 40px;
+    color: #ffffff;
+    background-color: #4658a5;
+}
+
+/* -----------------------------------
+    Стили для списка
+   ----------------------------------- */
+
+.list-container {
+    width: 320px;
+    background-color: #ffffff;
+    border-radius: 4px;
+}
+
+.list-header-div {
+    height: 60px;
+    padding: 0 25px 0;
+}
+
+.element-div {
+    height: 70px;
+    padding: 0 25px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top: 1px solid #eeeeee;
+}
+
+.element-person {
+    display: flex;
+    align-items: center;
+}
+
+.element-phone {
+    color: #999999;
+    font-size: 85%;
+}
