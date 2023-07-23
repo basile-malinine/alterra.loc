@@ -42,11 +42,16 @@
             Список контактов
         </div>
         <div class="list-elements lh-sm" id="listElements">
+            <div id="elementEmpty">
+                Список пуст
+            </div>
             {{-- Здесь будут добавляться Контакты --}}
         </div>
     </div>
 </div>
 
 <script src="../../public/bootstrap-5.3.0/js/bootstrap.min.js"></script>
+<script src="../../public/jquery-3.7.0/jquery-3.7.0.min.js"></script>
+<script src="../../public/js/main.js"></script>
 </body>
 </html>
