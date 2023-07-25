@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Contact;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactController;
 use \App\Http\Controllers\MainController;
 
 /*
@@ -14,5 +16,13 @@ use \App\Http\Controllers\MainController;
 |
 */
 
-// Маршрут к главной странице
+/**
+ * Маршрут к главной странице
+ */
 Route::get('/', [MainController::class, 'index']);
+
+/**
+ * Маршрут для работы с Контактами.
+ * В target передаётся либо 'add', либо 'del' (добавление / удаление Контакта).
+ */
+Route::post('/contact/{target}', [ContactController::class, 'main']);
