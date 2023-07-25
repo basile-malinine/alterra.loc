@@ -17,6 +17,7 @@ return new class extends Migration
             $table->increments('id')->comment('Идентификатор');
             $table->string('name', 50)->comment('Имя контакта');
             $table->string('phone')->comment('Телефон контакта');
+            $table->timestamps();
         });
     }
 
