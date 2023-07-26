@@ -8,13 +8,8 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    // Массив с ответом на AJAX запрос
-    public array $response = [
-        'id' => 0,
-        'name' => '',
-        'phone' => '',
-        'emptyDB' => true,  // true - в БД нет записей
-    ];
+    // Массив для подготовки ответа на AJAX запрос
+    private array $response = [];
 
     /**
      * Ф-ция main принимает AJAX запрос с фронта и перенаправляет его
@@ -29,6 +24,7 @@ class ContactController extends Controller
     {
         // Выбор оперциии
         match ($target) {
+            'all' => $this->getAllContacts($request),
             'add' => $this->addContact($request),
             'del' => $this->delContact($request),
         };
@@ -45,6 +41,12 @@ class ContactController extends Controller
      */
     private function addContact(Request $request): void
     {
+        // Валидация полей в запросе
+        $request->validate([
+            'name' => ['required', 'string'],
+            'phone' => ['required', 'string', 'min:11', 'max:11'],
+        ]);
+
         // true - в БД нет записей
         $emptyDB = !(Contact::query()->count() > 0);
 
@@ -69,7 +71,7 @@ class ContactController extends Controller
             $this->response['phone'] = $phone;
             $this->response['emptyDB'] = $emptyDB;
         }
-        // Если добавление не выполнено...
+        // Если добавление не выполнено (на фронте id == 0 признак ошибки)
         else {
             $this->response['id'] = 0;
         }
@@ -89,10 +91,9 @@ class ContactController extends Controller
         // Удаляем запись
         $res = $contacts->find($request->id)->delete();
 
+        // Готовим ответ на фронт
         if ($res) {
-            // true - в БД нет записей
-            $emptyDB = !(Contact::query()->count() > 0);
-            // Готовим ответ на фронт
+            $emptyDB = !(Contact::query()->count() > 0);  // true - в БД нет записей
             $this->response['id'] = $request->id;
             $this->response['emptyDB'] = $emptyDB;
         }
@@ -100,5 +101,20 @@ class ContactController extends Controller
         else {
             $this->response['id'] = 0;
         }
+    }
+
+    /**
+     * Ф-ция выбирает все записи из таблиы Контактов
+     *
+     * @return void
+     */
+    private function getAllContacts(): void
+    {
+        // Получаем все записи из таблицы Контакты
+        $contacts = new Contact();
+        $records = $contacts->query()->select(['id', 'name', 'phone'])->get();
+
+        // Готовим ответ на фронт
+        $this->response['records'] = $records;
     }
 }
