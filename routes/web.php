@@ -23,6 +23,7 @@ Route::get('/', [MainController::class, 'index']);
 
 /**
  * Маршрут для работы с Контактами.
- * В target передаётся либо 'add', либо 'del' (добавление / удаление Контакта).
+ * В target передаётся 'all' / 'add' / 'del'
+ * (получение всех Контактов / добавление / удаление Контакта).
  */
 Route::post('/contact/{target}', [ContactController::class, 'main']);

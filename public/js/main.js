@@ -50,14 +50,18 @@ function createContactHTML(id, name, phone) {
  * @param phone
  * @param emptyDB
  */
+
+
 function insertContact(id, name, phone, emptyDB) {
+    // Приводим формат строки телефона к требованиям ТЗ
+    phone = phone.replace(/(\d)(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5');
 
     // Получаем заполненный блок
-    const newContactHTML = createContactHTML(id, name, phone);
+    const newContactHTML = createContactHTML('el' + id, name, phone);
 
     // Если в БД не было записей прячем блок Список пуст
     if (emptyDB) {
-        $('#elementEmpty').toggle();
+        $('#elementEmpty').attr('hidden', '');
     }
 
     // Вставляем заполненный блок в начало списка
@@ -77,7 +81,7 @@ function removeContact(id, emptyDB) {
 
     // Если в БД больше нет записей отображаем блок Список пуст
     if (emptyDB) {
-        $('#elementEmpty').toggle();
+        $('#elementEmpty').removeAttr('hidden');
     }
 }
 
@@ -91,6 +95,27 @@ function sendAddContact(e) {
     // Отключаем реакцию по умолчанию кнопки Добавить (submit)
     e.preventDefault();
 
+    // Очищаем информацию об ошибках на форме
+    $('#inputNameError').text('');
+    $('#inputPhoneError').text('');
+
+    // Введённые пользователем данные данные в поле Телефон
+    let inpPhone = [];
+
+    // Чистим введённые данные, убираем все символы кроме цифр,
+    // match() вернёт массив
+    let phone = '';
+    inpPhone = $('#inputPhone').val().match(/\d+/g, '');
+
+    // Если после чистки данные присутствуют, преобразуем inpPhone[]
+    // в строку и записываем в phone
+    if (inpPhone) {
+        inpPhone.map((num) => phone += num);
+    }
+    // ...иначе очищаем поле ввода на форме
+    else {
+        $('#inputPhone').val('');
+    }
     // Отправляем AJAX запрос
     $.ajax({
         headers: {
@@ -100,22 +125,21 @@ function sendAddContact(e) {
         type: 'POST',
         data: {
             name: $('#inputName').val(),
-            phone: $('#inputPhone').val(),
+            phone: phone,
         },
         success: (response) => {
             // Если запись добавлена в БД
             if (response.id > 0) {
-                console.log(response);
-                insertContact('el' + response.id, response.name, response.phone, response.emptyDB);
+                insertContact(response.id, response.name, response.phone, response.emptyDB);
             }
             // Если не удалось добавить запись в БД
             else {
-                outMessage('Не удалось добавить запись');
+                alert('Не удалось добавить запись!');
             }
         },
         error: (response) => {
-            console.log(response);
-            outMessage('Ошибка сервера!');
+            $('#inputNameError').text(response.responseJSON.errors.name);
+            $('#inputPhoneError').text(response.responseJSON.errors.phone);
         },
     })
 }
@@ -144,26 +168,42 @@ function sendDelContact(e) {
         success: (response) => {
             // Если запись удалена из БД
             if (response.id > 0) {
-                console.log(response);
                 removeContact('el' + response.id, response.emptyDB);
             }
             // Если не удалось удалить запись из БД
             else {
-                outMessage('Не удалось удалить запись')
+                alert('Не удалось удалить запись!');
             }
         },
         error: (response) => {
-            console.log(response);
-            outMessage('Ошибка сервера!');
+            alert('Ошибка на сервере!');
         },
     })
 }
 
-function outMessage(msg) {
-    alert(msg);
+function sendGetAll() {
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        },
+        url: '/contact/all',
+        type: 'POST',
+        success: (response) => {
+            response.records.map((el) => {
+                insertContact(el.id, el.name, el.phone, false);
+            });
+            if (response.records.length === 0) {
+                $('#elementEmpty').removeAttr('hidden');
+            }
+        },
+        error: (response) => {
+            alert('Ошибка на сервере!');
+        },
+    })
 }
-
+// Событие onclick для кнопки Добавить
 $(document).ready(() => {
     $('#buttonAdd').on('click', sendAddContact);
 
+    sendGetAll();
 });
