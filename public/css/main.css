@@ -2,6 +2,7 @@ body {
     background-color: #ebeff4;
     color: #303030;
     font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
     overflow-y: scroll;
 }
 
@@ -43,13 +44,17 @@ input.form-control {
     padding: 0 25px 0;
 }
 
+.btn, .form-control {
+    height: 40px;
+    font-size: 14px;
+}
+
 .btn {
     border-radius: 4px;
 }
 
 .btn-primary {
     width: 98px;
-    height: 40px;
     margin-bottom: 25px;
     color: #ffffff;
     background-color: #4658a5;
@@ -86,11 +91,13 @@ input.form-control {
 .element-person {
     display: flex;
     align-items: center;
+    padding-bottom: 1px;
 }
 
 .element-del {
+    margin-bottom: 3px;
     padding: 0 4px 0 4px;
-    font-size: 80%;
+    font-size: 85%;
 }
 
 .element-del:hover {

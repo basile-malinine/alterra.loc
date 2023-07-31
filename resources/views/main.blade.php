@@ -27,11 +27,11 @@
         <div class="form-container">
             <form>
                 <div class="name-div">
-                    <input type="text" class="form-control form-control-md" id="inputName" placeholder="Имя">
+                    <input type="text" class="form-control" id="inputName" placeholder="Имя">
                     <span id="inputNameError" class="err-msg alert-message text-danger p-0 m-0 lh-1" style="font-size: 12px"></span>
                 </div>
                 <div class="phone-div">
-                    <input type="text" class="form-control form-control-md" id="inputPhone" name="phone" value="{{old('phone')}}" placeholder="Телефон">
+                    <input type="text" class="form-control" id="inputPhone" name="phone" value="{{old('phone')}}" placeholder="Телефон">
                     <p id="inputPhoneError" class="err-msg alert-message text-danger p-0 m-0 lh-1" style="font-size: 12px"></p>
                 </div>
                 <div class="d-flex justify-content-end">
